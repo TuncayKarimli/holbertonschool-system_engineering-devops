@@ -1,0 +1,18 @@
+This distributed web infrastructure consists of three servers: one dedicated to load balancing and two acting as application servers. 
+
+### Why additional elements were added:
+- Load Balancer (HAproxy): Added to distribute incoming traffic across multiple servers to prevent any single server from becoming a bottleneck and to increase the system's availability.
+- Second Web/App Server: Added to provide redundancy; if one server fails, the other can still serve the website.
+
+### Load Balancer Specifics:
+- Distribution Algorithm: Round Robin. This algorithm works by sending each new request to the next server in the list, cycling through them sequentially to ensure an even distribution of load.
+- Setup: Active-Active. In this configuration, both servers are actively processing requests at the same time. This differs from Active-Passive, where one server remains on standby and only starts processing traffic if the active server fails.
+
+### Database Cluster (Primary-Replica):
+- Mechanism: The Primary-Replica (Master-Slave) cluster works by designating one node (Primary) to handle all write operations (INSERT, UPDATE, DELETE). These changes are then synchronized to the Replica node(s).
+- Application Interaction: The application sends all data-modifying requests (Writes) to the Primary node. It typically sends data-retrieval requests (Reads) to the Replica node to reduce the workload on the Primary.
+
+### Infrastructure Issues:
+- SPOF (Single Point of Failure): The Load Balancer itself is a SPOF; if it fails, the entire network becomes unreachable. Additionally, if the Primary database node fails, the application cannot perform write operations.
+- Security Issues: The infrastructure lacks a firewall to block unauthorized access and does not use HTTPS, meaning data transmitted between the user and the server is not encrypted and is vulnerable to interception.
+- No Monitoring: There is no system in place to track server health, performance metrics, or error rates, making it difficult to detect and respond to failures in real-time.
