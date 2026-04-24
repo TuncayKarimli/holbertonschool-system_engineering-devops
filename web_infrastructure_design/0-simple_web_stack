@@ -1,0 +1,15 @@
+In this one-server web infrastructure, the process begins when a user enters "www.foobar.com" into their browser. The browser sends a request to a DNS server to resolve the domain name. The DNS server identifies the "www" A record, which points to the server's IP address, 8.8.8.8. The user's computer then establishes a connection to the server using the HTTP protocol.
+
+Specifics of the infrastructure:
+- Server: A physical or virtual machine that hosts the website's components and handles incoming requests.
+- Domain Name: A human-readable address (foobar.com) that maps to the server's numerical IP address.
+- DNS Record Type: The "www" in "www.foobar.com" is an A record because it points directly to an IP address.
+- Web Server (Nginx): Accepts incoming HTTP requests and serves static content or forwards dynamic requests to the application server.
+- Application Server: Executes the application logic (e.g., PHP, Python) and processes data before sending it back to the web server.
+- Database (MySQL): Stores and manages the website's data, such as user profiles or product information.
+- Communication Protocol: The server uses HTTP/HTTPS to communicate with the user's browser.
+
+Issues with this infrastructure:
+- SPOF (Single Point of Failure): Since all components are on one server, the entire site goes down if the server fails.
+- Downtime: Maintenance or code deployments often require restarting services, causing the site to be unavailable.
+- Scaling: The infrastructure cannot handle high traffic increases because it is limited by the single server's hardware resources.
