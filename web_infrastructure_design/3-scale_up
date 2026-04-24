@@ -1,0 +1,12 @@
+This infrastructure represents a highly available, decoupled web stack where every layer is designed for redundancy and performance optimization.
+
+### Why additional elements were added:
+- **Second Load Balancer (HAproxy Cluster):** A second HAproxy load balancer is added to form a high-availability cluster (using a tool like Keepalived). This removes the Single Point of Failure (SPOF) of the entry point; if the active load balancer fails, the passive one takes over the traffic immediately.
+- **Dedicated Web Server (Nginx):** By moving the web server to its own dedicated hardware, it can focus exclusively on handling SSL termination and serving static content without competing for CPU or RAM with the application or database.
+- **Dedicated Application Server:** This isolation ensures that the business logic has access to all available system resources. It allows for independent scaling; if the application becomes the bottleneck, more application servers can be added without modifying the web or database layers.
+- **Dedicated Database Server (MySQL):** Databases are highly resource-intensive in terms of Disk I/O and Memory. Placing MySQL on its own server prevents performance degradation caused by other services and allows for specific security hardening of the data storage layer.
+
+### Specifics of the Scaled Infrastructure:
+- **Separation of Concerns:** Decoupling the tiers (Web, App, and Database) allows for specialized configuration for each service. It also simplifies troubleshooting and maintenance.
+- **Horizontal Scalability:** This architecture is the foundation for horizontal scaling. Because the components are already split, we can easily add more servers to any specific tier that experiences high load.
+- **Security through Isolation:** With split components, firewalls can be configured with extreme precision. For instance, the database server can be locked down to only accept connections from the application server's private IP, keeping it completely hidden from the public internet.
