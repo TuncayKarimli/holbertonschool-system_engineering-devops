@@ -1,0 +1,18 @@
+This web infrastructure is a three-server setup designed for security, encrypted traffic, and continuous monitoring.
+
+### Why additional elements were added:
+- Firewalls (x3): Added to protect each server by filtering incoming and outgoing traffic based on security rules.
+- SSL Certificate: Added to enable HTTPS, ensuring that all data transmitted between the user's browser and the web server is encrypted.
+- Monitoring Clients (x3): Added to each server to collect and send performance metrics and logs to a central monitoring service (like Sumo Logic or Prometheus).
+
+### Specifics of the Infrastructure:
+- Firewalls: Their role is to act as a barrier between a trusted network and an untrusted network. They prevent unauthorized access by blocking traffic on specific ports while allowing legitimate web traffic (e.g., ports 80, 443).
+- HTTPS: Serving traffic over HTTPS ensures data privacy and integrity. It prevents "Man-in-the-Middle" attacks where a malicious actor could intercept and read sensitive data like passwords or credit card numbers.
+- Monitoring: Used to track the health of the infrastructure, detect failures, and optimize performance. It provides visibility into resource usage (CPU, RAM) and application status.
+- Data Collection: The monitoring tool collects data through "agents" or "clients" installed on the servers. These agents push metrics and log data to the monitoring platform via the network.
+- Monitoring Web Server QPS: To monitor Queries Per Second (QPS), you would configure the monitoring client to parse the Nginx access logs or use an Nginx exporter to count the number of HTTP requests processed per second.
+
+### Issues with this Infrastructure:
+- SSL Termination at the Load Balancer: When SSL is terminated at the load balancer, the traffic between the load balancer and the application servers is unencrypted (plain HTTP). If an attacker breaches the internal network, they can sniff the traffic.
+- Single MySQL Write Node: Having only one server capable of accepting writes is a Single Point of Failure (SPOF). If the primary database fails, the application cannot save any new data, resulting in a partial outage.
+- Servers with All Components: Running the database, web server, and application server on the same machine leads to resource contention. A spike in web traffic can starve the database of CPU, and a security breach in the web server provides direct access to the database files.
